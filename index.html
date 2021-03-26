@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+    <title>Hello BabylonJS</title>
+  </head>
+  <body>
+    <div class="outerContainer">
+      <div id="leftPanel" class="leftContainer">
+        <h1>Simple Mesh Experiments with Babylon.js</h1>
+
+        <form action="/action_page.php">
+          <fieldset>
+            <legend>Please select your Mesh:</legend>
+            <input type="radio" id="cone" name="mesh" value="cone" />
+            <label for="cone">Cone</label><br />
+            <input type="radio" id="cube" name="mesh" value="cube" />
+            <label for="cube">Cube</label><br />
+            <input type="radio" id="cylinder" name="mesh" value="cylinder" />
+            <label for="cylinder">Cylinder</label><br />
+            <input type="radio" id="icosphere" name="mesh" value="icosphere" />
+            <label for="icosphere">ICOSphere</label><br />
+            <input
+              type="radio"
+              id="suzanne"
+              name="mesh"
+              value="suzanne"
+              checked="true"
+            />
+            <label for="suzanne">Suzanne</label><br />
+            <input type="radio" id="torus" name="mesh" value="torus" />
+            <label for="torus">Torus</label><br />
+            <input type="radio" id="uvsphere" name="mesh" value="uvsphere" />
+            <label for="uvsphere">UVSphere</label><br />
+          </fieldset>
+
+          <br />
+
+          <fieldset>
+            <legend>Please select your Mesh Type:</legend>
+            <input type="radio" id="wire" name="meshtype" value="wire" />
+            <label for="wire">Wireframe</label><br />
+            <input
+              type="radio"
+              id="flat"
+              name="meshtype"
+              value="flat"
+              checked="true"
+            />
+            <label for="flat">Flat Shading</label><br />
+            <input type="radio" id="smooth" name="meshtype" value="smooth" />
+            <label for="smooth">Smooth</label><br /><br />
+          </fieldset>
+
+          <input type="checkbox" id="normals" name="normals" value="normals" />
+          <label for="normals"> Show Normals</label><br />
+
+          <input
+            type="checkbox"
+            id="rotation"
+            name="rotation"
+            value="rotation"
+          />
+          <label for="rotation"> Stop Rotation</label><br />
+        </form>
+      </div>
+
+      <div id="rightPanel" class="rightContainer">
+        <div id="webglOp"><canvas id="canvas3d"></canvas></div>
+      </div>
+    </div>
+    <script src="/babylon/babylon.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
