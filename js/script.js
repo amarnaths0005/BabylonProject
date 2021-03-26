@@ -129,7 +129,7 @@ function readSuzanne() {
 
   function reportStatus() {
     if (oXHR.readyState == 4) {
-      console.log(oXHR.responseText);
+      //console.log(oXHR.responseText);
       suzanneObject = JSON.parse(oXHR.responseText);
       // Check if request is complete.
 
