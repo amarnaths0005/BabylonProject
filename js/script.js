@@ -120,43 +120,39 @@ function showNormals() {
 }
 
 function readSuzanne() {
-  {
-    {
-      fetch(meshFile)
-        .then((response) => response.json())
-        .then((data) => {
-          suzanneObject = data;
-          // Check if request is complete.
+  fetch(meshFile)
+    .then((response) => response.json())
+    .then((data) => {
+      suzanneObject = data;
+      // Check if request is complete.
 
-          let meshes = suzanneObject.meshes[0];
-          let vertices = meshes.vertices;
-          let verticesCount = vertices.length / 8;
+      let meshes = suzanneObject.meshes[0];
+      let vertices = meshes.vertices;
+      let verticesCount = vertices.length / 8;
 
-          positions.length = 0;
-          normals.length = 0;
-          uvs.length = 0;
-          for (let index = 0; index < verticesCount; ++index) {
-            let x = vertices[index * verticesStep];
-            let y = vertices[index * verticesStep + 1];
-            let z = vertices[index * verticesStep + 2];
-            positions.push(x, y, z);
-            let nx = vertices[index * verticesStep + 3];
-            let ny = vertices[index * verticesStep + 4];
-            let nz = vertices[index * verticesStep + 5];
-            normals.push(nx, ny, nz);
-            let u = vertices[index * verticesStep + 6];
-            let v = vertices[index * verticesStep + 7];
-            uvs.push(u, v);
-          }
+      positions.length = 0;
+      normals.length = 0;
+      uvs.length = 0;
+      for (let index = 0; index < verticesCount; ++index) {
+        let x = vertices[index * verticesStep];
+        let y = vertices[index * verticesStep + 1];
+        let z = vertices[index * verticesStep + 2];
+        positions.push(x, y, z);
+        let nx = vertices[index * verticesStep + 3];
+        let ny = vertices[index * verticesStep + 4];
+        let nz = vertices[index * verticesStep + 5];
+        normals.push(nx, ny, nz);
+        let u = vertices[index * verticesStep + 6];
+        let v = vertices[index * verticesStep + 7];
+        uvs.push(u, v);
+      }
 
-          indices = meshes.indices;
-          scene = createScene();
+      indices = meshes.indices;
+      scene = createScene();
 
-          normalCheck.checked = false;
-          showNormals();
-        });
-    }
-  }
+      normalCheck.checked = false;
+      showNormals();
+    });
 }
 
 // CreateScene function that creates and return the scene
