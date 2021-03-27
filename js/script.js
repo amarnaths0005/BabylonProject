@@ -123,6 +123,7 @@ function readSuzanne() {
   fetch(meshFile)
     .then((response) => response.json())
     .then((data) => {
+      console.log("Data is " + data);
       suzanneObject = data;
       // Check if request is complete.
 
