@@ -67,7 +67,7 @@ function init() {
   uvsphere.addEventListener("click", handleOption, false);
   normalCheck.addEventListener("click", showNormals, false);
 
-  suzanne.checked = true;
+  cube.checked = true;
   meshFile = "../resources/Suzanne.json";
 
   readSuzanne();
