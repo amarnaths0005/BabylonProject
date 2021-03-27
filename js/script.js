@@ -120,45 +120,41 @@ function showNormals() {
 }
 
 function readSuzanne() {
-  var oXHR = new XMLHttpRequest();
+  {
+    {
+      fetch(meshFile)
+        .then((response) => response.json())
+        .then((data) => {
+          suzanneObject = data;
+          // Check if request is complete.
 
-  // Initiate request.
-  oXHR.onreadystatechange = reportStatus;
-  oXHR.open("GET", meshFile, true);
-  oXHR.send();
+          let meshes = suzanneObject.meshes[0];
+          let vertices = meshes.vertices;
+          let verticesCount = vertices.length / 8;
 
-  function reportStatus() {
-    if (oXHR.readyState == 4) {
-      //console.log(oXHR.responseText);
-      suzanneObject = JSON.parse(oXHR.responseText);
-      // Check if request is complete.
+          positions.length = 0;
+          normals.length = 0;
+          uvs.length = 0;
+          for (let index = 0; index < verticesCount; ++index) {
+            let x = vertices[index * verticesStep];
+            let y = vertices[index * verticesStep + 1];
+            let z = vertices[index * verticesStep + 2];
+            positions.push(x, y, z);
+            let nx = vertices[index * verticesStep + 3];
+            let ny = vertices[index * verticesStep + 4];
+            let nz = vertices[index * verticesStep + 5];
+            normals.push(nx, ny, nz);
+            let u = vertices[index * verticesStep + 6];
+            let v = vertices[index * verticesStep + 7];
+            uvs.push(u, v);
+          }
 
-      let meshes = suzanneObject.meshes[0];
-      let vertices = meshes.vertices;
-      let verticesCount = vertices.length / 8;
+          indices = meshes.indices;
+          scene = createScene();
 
-      positions.length = 0;
-      normals.length = 0;
-      uvs.length = 0;
-      for (let index = 0; index < verticesCount; ++index) {
-        let x = vertices[index * verticesStep];
-        let y = vertices[index * verticesStep + 1];
-        let z = vertices[index * verticesStep + 2];
-        positions.push(x, y, z);
-        let nx = vertices[index * verticesStep + 3];
-        let ny = vertices[index * verticesStep + 4];
-        let nz = vertices[index * verticesStep + 5];
-        normals.push(nx, ny, nz);
-        let u = vertices[index * verticesStep + 6];
-        let v = vertices[index * verticesStep + 7];
-        uvs.push(u, v);
-      }
-
-      indices = meshes.indices;
-      scene = createScene();
-
-      normalCheck.checked = false;
-      showNormals();
+          normalCheck.checked = false;
+          showNormals();
+        });
     }
   }
 }
@@ -265,3 +261,4 @@ function computeNormals() {
     lines: lineSystem,
   });
 }
+
