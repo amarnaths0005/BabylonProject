@@ -5,3 +5,5 @@ Simple JavaScript Project to display a mesh on the screen, using the Babylon.js 
 
 User can select the following meshes for display: - Cone, Cube, Cylinder, Sphere 1, Sphere 2, Torus, Suzanne monkey.
 User can view the normals to the triangular facets.
+
+The application is available at https://amarnaths0005.github.io/BabylonProject/
