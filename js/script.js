@@ -6,6 +6,9 @@ Babylon.js library.
 
 The meshes themselves are in the form of JSON files, which are taken 
 from the Github site - https://github.com/davidmigloz/3d-engine
+From these JSON files, the vertices and indices are taken out, and stored as 
+separate arrays in the files cone.js, cube.js, cylinder.js, icoSphere.js, 
+suzanne.js, torus.js, uvSphere.js. These arrays are used in this script.js file.
 
 The functionality is:
 - To display the chosen mesh in 3D on the browser
@@ -43,14 +46,15 @@ let mesh;
 let lineSystem = [];
 let lineMesh;
 
-let suzanneObject;
+let meshObject;
+let vertices = [];
 let positions = [];
 let indices = [];
-let normals = [];
-let uvs = [];
-let verticesStep = 8;
 
-let meshFile = "../resources/Suzanne.json";
+let normals = [];
+// Uncomment the next line if you want the UVs
+//let uvs = [];
+let verticesStep = 8;
 
 window.onload = init;
 
@@ -67,10 +71,9 @@ function init() {
   uvsphere.addEventListener("click", handleOption, false);
   normalCheck.addEventListener("click", showNormals, false);
 
-  cube.checked = true;
-  meshFile = "../resources/Suzanne.json";
+  suzanne.checked = true;
 
-  readSuzanne();
+  read3dMesh();
 
   engine.runRenderLoop(function () {
     if (scene) {
@@ -93,22 +96,36 @@ function init() {
 
 function handleOption() {
   if (cone.checked) {
-    meshFile = "../resources/Cone.json";
+    //As extracted from "../resources/Cone.json";
+    vertices = coneVertices;
+    indices = coneIndices;
   } else if (cube.checked) {
-    meshFile = "../resources/Cube.json";
+    //As extracted from "../resources/Cube.json";
+    vertices = cubeVertices;
+    indices = cubeIndices;
   } else if (cylinder.checked) {
-    meshFile = "../resources/Cylinder.json";
+    //As extracted from "../resources/Cylinder.json";
+    vertices = cylinderVertices;
+    indices = cylinderIndices;
   } else if (icosphere.checked) {
-    meshFile = "../resources/ICOSphere.json";
+    //As extracted from "../resources/ICOSphere.json";
+    vertices = icoSphereVertices;
+    indices = icoSphereIndices;
   } else if (suzanne.checked) {
-    meshFile = "../resources/Suzanne.json";
+    //As extracted from "../resources/Suzanne.json";
+    vertices = suzanneVertices;
+    indices = suzanneIndices;
   } else if (torus.checked) {
-    meshFile = "../resources/torus.json";
+    //As extracted from "../resources/torus.json";
+    vertices = torusVertices;
+    indices = torusIndices;
   } else {
-    meshFile = "../resources/UVSphere.json";
+    //As extracted from "../resources/UVSphere.json";
+    vertices = uvSphereVertices;
+    indices = uvSphereIndices;
   }
 
-  readSuzanne();
+  read3dMesh();
 }
 
 function showNormals() {
@@ -119,41 +136,41 @@ function showNormals() {
   }
 }
 
-function readSuzanne() {
-  fetch(meshFile)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Data is " + data);
-      suzanneObject = data;
-      // Check if request is complete.
+function read3dMesh() {
+  let verticesCount = vertices.length / 8;
 
-      let meshes = suzanneObject.meshes[0];
-      let vertices = meshes.vertices;
-      let verticesCount = vertices.length / 8;
+  positions.length = 0;
 
-      positions.length = 0;
-      normals.length = 0;
-      uvs.length = 0;
-      for (let index = 0; index < verticesCount; ++index) {
-        let x = vertices[index * verticesStep];
-        let y = vertices[index * verticesStep + 1];
-        let z = vertices[index * verticesStep + 2];
-        positions.push(x, y, z);
-        let nx = vertices[index * verticesStep + 3];
-        let ny = vertices[index * verticesStep + 4];
-        let nz = vertices[index * verticesStep + 5];
-        normals.push(nx, ny, nz);
-        let u = vertices[index * verticesStep + 6];
-        let v = vertices[index * verticesStep + 7];
-        uvs.push(u, v);
-      }
+  normals.length = 0;
+  // Uncomment the next line if you want to store the UVs
+  //uvs.length = 0;
+  for (let index = 0; index < verticesCount; ++index) {
+    // There are eight quantities told for a vertex
+    // The first three are the three coordinates - x, y, z
+    // The next three are the directions of the normal, at the vertex
+    // The last two are the u, v coordinates of the vertex, for purposes
+    //    texture mapping.
+    let x = vertices[index * verticesStep];
+    let y = vertices[index * verticesStep + 1];
+    let z = vertices[index * verticesStep + 2];
+    positions.push(x, y, z);
 
-      indices = meshes.indices;
-      scene = createScene();
+    let nx = vertices[index * verticesStep + 3];
+    let ny = vertices[index * verticesStep + 4];
+    let nz = vertices[index * verticesStep + 5];
+    normals.push(nx, ny, nz);
 
-      normalCheck.checked = false;
-      showNormals();
-    });
+    /*
+    This code, which is commented is for storing UV values
+    let u = vertices[index * verticesStep + 6];
+    let v = vertices[index * verticesStep + 7];
+    uvs.push(u, v);
+    */
+  }
+
+  scene = createScene();
+
+  showNormals();
 }
 
 // CreateScene function that creates and return the scene
@@ -258,4 +275,3 @@ function computeNormals() {
     lines: lineSystem,
   });
 }
-
